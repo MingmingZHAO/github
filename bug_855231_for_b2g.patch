@@ -1,0 +1,61 @@
+From 145783564e49485b5856ae9630ba7ba8f0b67960 Mon Sep 17 00:00:00 2001
+From: zmm <zmm@tcl.com>
+Date: Wed, 27 Mar 2013 16:38:51 +0800
+Subject: [PATCH] bug_416818:Mingming,ZHAO:modify the Number and name Match
+
+---
+ apps/communications/dialer/js/handled_call.js | 2 +-
+ apps/communications/dialer/js/recents.js      | 2 +-
+ apps/communications/dialer/js/utils.js        | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/apps/communications/dialer/js/handled_call.js b/apps/communications/dialer/js/handled_call.js
+index 83f7c28..28c8bd3 100644
+--- a/apps/communications/dialer/js/handled_call.js
++++ b/apps/communications/dialer/js/handled_call.js
+@@ -126,7 +126,7 @@ HandledCall.prototype.updateCallNumber = function hc_updateCallNumber() {
+       }
+       KeypadManager.formatPhoneNumber('end', true);
+       var additionalInfo = Utils.getPhoneNumberAdditionalInfo(matchingTel,
+-                                                              contact);
++                                                              contact, number);
+       KeypadManager.updateAdditionalContactInfo(additionalInfo);
+       if (contact.photo && contact.photo.length > 0) {
+         self.photo = contact.photo[0];
+diff --git a/apps/communications/dialer/js/recents.js b/apps/communications/dialer/js/recents.js
+index a4326fb..faefeca 100644
+--- a/apps/communications/dialer/js/recents.js
++++ b/apps/communications/dialer/js/recents.js
+@@ -752,7 +752,7 @@ var Recents = {
+         logItem.classList.remove('hasPhoto');
+       }
+       var phoneNumberAdditionalInfo = Utils.getPhoneNumberAdditionalInfo(
+-        matchingTel, contact);
++        matchingTel, contact, phoneNumber);
+       phoneNumberAdditionalInfoNode.textContent = phoneNumberAdditionalInfo;
+       logItem.classList.add('isContact');
+       logItem.dataset['contactId'] = contact.id;
+diff --git a/apps/communications/dialer/js/utils.js b/apps/communications/dialer/js/utils.js
+index 5a9be96..bf05334 100644
+--- a/apps/communications/dialer/js/utils.js
++++ b/apps/communications/dialer/js/utils.js
+@@ -49,14 +49,14 @@ var Utils = {
+ 
+   // XXX: this is way too complex for the task accomplished
+   getPhoneNumberAdditionalInfo: function ut_getPhoneNumberAdditionalInfo(
+-    matchingTel, associatedContact) {
++    matchingTel, associatedContact, inputNumber) {
+     var additionalInfo, phoneType, phoneCarrier,
+         contactPhoneEntry, contactPhoneNumber, contactPhoneType,
+         contactPhoneCarrier, multipleNumbersSameCarrier,
+         length = associatedContact.tel.length;
+ 
+     // Phone type is a mandatory field.
+-    contactPhoneNumber = matchingTel.value;
++    contactPhoneNumber = inputNumber;
+     additionalInfo = matchingTel.type;
+     phoneType = matchingTel.type;
+     if (matchingTel.carrier) {
+-- 
+1.8.2.230.g2bba2f0
+
